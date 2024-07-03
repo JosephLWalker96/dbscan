@@ -1,5 +1,6 @@
 #include "dbscan.hpp"
 #include <iostream>
+#include <chrono>
 #include <string>
 #include <system_error>
 #include <vector>
@@ -172,6 +173,8 @@ int main(int argc, char** argv)
     auto min_pts  = to_num<int>  (argv[3]);
     auto [values, dim] = read_values(argv[1]);
 
+    auto startTime = std::chrono::steady_clock::now();
+
     if(dim == 2)
     {
         dbscan2d(values, epsilon, min_pts);
@@ -180,4 +183,7 @@ int main(int argc, char** argv)
     {
         dbscan3d(values, epsilon, min_pts);
     }
+    auto endTime = std::chrono::steady_clock::now();
+    auto duration =  std::chrono::duration<double>(endTime - startTime).count();
+    std::cout << "runtime was: " << duration << std::endl;
 }
